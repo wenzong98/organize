@@ -180,3 +180,36 @@ docker compose --profile organize run --rm organize run /config/video-classify.y
 
 自动化测试覆盖目录继承、跨来源组合、冲突、排除条件、扫描边界、无主题名称、模拟移动、同名冲突与兼容接口的模拟响应。
 没有实际连接用户的 NAS，也没有使用真实第三方密钥做远端测试。服务商的模型名、参数支持和分类效果需要配置后实测。
+
+
+## 从绿联“镜像源下载”使用发布镜像
+
+仓库的 `Publish NAS Docker image` 工作流在 main 更新、发布版本或手动运行时构建镜像。
+首次 fork 的仓库可能需要先在 GitHub Actions 页面启用工作流。
+成功发布后，镜像包默认可能为私有；在 GitHub Packages 的 `organize` 包设置中将可见性改为 Public，才能匿名下载。
+工作流只使用 GitHub 自动提供的 `GITHUB_TOKEN`，无需 Docker Hub 账号或额外发布密钥。
+
+发布成功且包公开后，在绿联 Docker 的“添加镜像 → 从镜像源下载”中输入：
+
+```text
+ghcr.io/wenzong98/organize:latest
+```
+
+镜像包含 `linux/amd64` 和 `linux/arm64`，客户端自动选择对应架构。
+还提供 `sha-<完整提交SHA>` 标签，可锁定某次发布，避免 latest 更新导致版本变化。
+首次运行按前文映射四处路径，并将运行命令设置为：
+
+```text
+sim /config/video-classify.yaml -F jsonl
+```
+
+此任务是一次性批处理，运行结束后容器退出是正常行为，不提供网页端口。
+输入配置文件需要先下载到 NAS，容器的启动命令只传参数，不要重复填写入口程序 `python -m organize`。
+
+若改用 Compose 中的已发布镜像，把 `build` 项替换为：
+
+```yml
+image: ghcr.io/wenzong98/organize:latest
+```
+
+工作流发布前会在 amd64 镜像内验证版本和目录继承分类；arm64 镜像进行构建，不执行同一运行时测试。
