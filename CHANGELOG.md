@@ -1,3 +1,7 @@
+# Fork changes (unreleased)
+
+- Add `classify` filename/directory-context filter with configurable keyword rules, optional third-party OpenAI-compatible semantic and LLM fallback, uncertainty reporting, and NAS examples.
+
 # Changelog
 
 ## [Unreleased]

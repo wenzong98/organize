@@ -1,3 +1,4 @@
+from .classify import Classify
 from .created import Created
 from .date_added import DateAdded
 from .date_lastused import DateLastUsed
@@ -16,6 +17,7 @@ from .regex import Regex
 from .size import Size
 
 ALL = (
+    Classify,
     Created,
     DateAdded,
     DateLastUsed,

@@ -7,3 +7,8 @@
 
 # and the organize folder
 !organize/**/*.py
+
+# Required by setuptools when installing the project
+!README.md
+!LICENSE.txt
+!organize/py.typed

@@ -1,0 +1,52 @@
+# Container paths; map your own UGREEN NAS directories in compose.yaml.
+rules:
+  - name: 视频分类归档
+    locations: /data/incoming
+    subfolders: true
+    filters:
+      - extension: [mp4, mkv, mov, avi, webm, m4v]
+      - classify:
+          depth: 3
+          include_root: false
+          ignore_dirs: [下载, 待整理, 备份, 新建文件夹, downloads]
+          aliases:
+            creator: 创作者
+            KOL: 达人
+            检索增强生成: RAG
+          categories:
+            - id: creator_operations
+              folder: 运营/创作者运营
+              description: 创作者、达人和音乐人的招募、孵化、激励及留存
+              strong: [创作者运营, 达人孵化, 音乐人运营]
+              any: [创作者, 达人, 音乐人, 招募, 激励, 留存]
+              exclude: [员工招聘, 商家入驻]
+              examples: [如何让音乐人持续投稿]
+            - id: rag
+              folder: 技术/RAG
+              description: 检索增强生成、知识库和向量检索技术
+              strong: [RAG, 向量数据库, 检索增强生成]
+              any: [知识库, 召回, 向量检索]
+              examples: [给大模型接入企业文档]
+            - id: art
+              folder: 艺术文化
+              description: 艺术史、摄影、展览和策展
+              strong: [艺术史, 策展, 北斋]
+              any: [摄影, 展览, 美术馆]
+          # Optional third-party OpenAI-compatible API. Set values before enabling.
+          # model_api:
+          #   base_url: https://YOUR-PROVIDER/v1
+          #   api_key_env: NAS_MODEL_API_KEY
+          #   llm_model: YOUR-CHAT-MODEL
+          #   embedding_model: YOUR-EMBEDDING-MODEL  # optional
+          #   json_mode: true  # false if your provider does not support JSON mode
+          #   threshold: 0.75
+          #   margin: 0.10
+          #   top_k: 3
+          #   timeout: 60
+    actions:
+      - move:
+          dest: /data/library/{classify.folder}/{classify.relative_parent}/
+          on_conflict: skip
+      - write:
+          outfile: /logs/classifications.jsonl
+          text: '{classify.json}'
