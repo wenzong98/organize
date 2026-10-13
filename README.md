@@ -259,3 +259,14 @@ BTC:
 ```
 39vpniiZk8qqGB2xEqcDjtWxngFCCdWGjY
 ```
+
+
+## NAS video classification (this fork)
+
+This fork adds a `classify` filter for filename and parent-directory classification.
+It supports configurable keyword rules, optional remote OpenAI-compatible embeddings
+and chat completion fallback, and review output for uncertain files.
+
+See the [Chinese setup guide](docs/nas-video-classification.md) and
+[UGREEN NAS examples](examples/nas/). Install or build from this fork to use it;
+the upstream PyPI package does not include this extension.

@@ -1,0 +1,14 @@
+services:
+  organize:
+    build:
+      context: ../..
+    volumes:
+      - ${NAS_INCOMING:?Set NAS_INCOMING}:/data/incoming:rw
+      - ${NAS_LIBRARY:?Set NAS_LIBRARY}:/data/library:rw
+      - ${NAS_LOGS:?Set NAS_LOGS}:/logs:rw
+      - ./video-classify.yaml:/config/video-classify.yaml:ro
+    environment:
+      NAS_MODEL_API_KEY: ${NAS_MODEL_API_KEY:-}
+    # Preview only by default. Actual execution requires overriding command.
+    command: [sim, /config/video-classify.yaml, -F, jsonl]
+    profiles: [organize]

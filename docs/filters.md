@@ -742,3 +742,11 @@ rules:
     actions:
       - move: "~/Pictures/sorted/{relative_path}/"
 ```
+
+
+## classify
+
+Classify filenames using bounded parent-directory context, keyword rules and optional
+third-party OpenAI-compatible semantic/LLM fallback. Uncertain results are skipped
+by default. See [NAS video classification](nas-video-classification.md) for configuration,
+review logs and deployment.
